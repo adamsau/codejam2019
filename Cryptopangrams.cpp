@@ -15,10 +15,8 @@ unordered_map<long, int> um;
 
 long gcd(long a,long b)
 {
-    if(a%b==0)
-        return b;
-    else
-        return gcd(b,a%b);
+    if(a % b == 0) return b;
+    else return gcd(b, a % b);
 }
 
 void solve() {
@@ -28,35 +26,19 @@ void solve() {
     um.clear();
     long N, L;
     cin >> N >> L;
-    for(long i = 0; i < L; ++i) {
-        long tmp;
-        cin >> tmp;
-        a[i] = tmp;
-    }
+    for(long i = 0; i < L; ++i) cin >> a[i];
 
     for(long i = 1; i < L; ++i) {
         if(a[i] == a[i - 1]) continue;
         list[i] = gcd(a[i], a[i - 1]);
-        int j = i - 1;
-        while(j >= 0 && list[j] == 0) {
-            list[j] = a[j] / list[j + 1];
-            --j;
-        }
-        j = i + 1;
-        while(j < L + 1 && list[j] == 0) {
-            list[j] = a[j - 1] / list[j - 1];
-            ++j;
-        }
+        for(int j = i - 1; j >= 0 && list[j] == 0; --j) list[j] = a[j] / list[j + 1];
+        for(int j = i + 1; j < L + 1 && list[j] == 0; ++j) list[j] = a[j - 1] / list[j - 1];
         break;
     }
-
     for(long i = 0; i < L + 1; ++i) s.emplace(list[i]);
     int c = 0;
     for(auto it = s.begin(); it != s.end(); ++it) um[*it] = c++;
-    for(long i = 0; i < L + 1; ++i) {
-        char cc = 'A' + um[list[i]];
-        cout << cc;
-    }
+    for(long i = 0; i < L + 1; ++i) cout << (char)('A' + um[list[i]]);
     cout << endl;
 }
 
